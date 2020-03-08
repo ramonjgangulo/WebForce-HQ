@@ -28,7 +28,6 @@ class UserController extends Controller
 
     public function update(UserRequest $request, $id)
     {
-        dd($request->all());
         if(User::tryUpdate($request->all(),$id))
             return response()->json(['message' => 'success']);
         return response()->json(['message' => 'failure']);

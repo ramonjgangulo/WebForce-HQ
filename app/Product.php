@@ -51,10 +51,9 @@ class Product extends Model
     {
         return static::select(static::$showable)->first();
     }
-    public static function tryUpdate(Request $request ,Product $id)
+    public static function tryUpdate($request ,$id)
     {
         try{
-            dd($id);
             $request['product_slug']=Str::slug($request['product_name'],'-');
             static::find($id)->update($request);
             return true;

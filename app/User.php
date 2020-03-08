@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable,SoftDeletes,HasRoles;
+    use Notifiable,SoftDeletes;
 
     protected $table='users';
 
@@ -28,7 +27,7 @@ class User extends Authenticatable
     ];
 
     protected $hidden = [
-        'password',
+        'user_password',
     ];
 
     public static function store($user)
@@ -44,7 +43,8 @@ class User extends Authenticatable
     public static function tryUpdate($request ,$id)
     {
         try{
-            $request['user_password']=Hash::make($request['user_password']);
+            if(array_key_exists('user_password',$request))
+                $request['user_password']=Hash::make($request['user_password']);
             static::find($id)->update($request);
             return true;
         }catch(Exception $e){

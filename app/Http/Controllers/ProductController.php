@@ -12,10 +12,8 @@ class ProductController extends Controller
         return response()->json(Product::showAll(),200);
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        dd($request->all());
-
         if(Product::store($request->all()))
             return response()->json(['message' => 'success'],200);
         return response()->json(['message' => 'error']);
@@ -28,7 +26,6 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request,$id)
     {
-        dd($request->all());
         if(Product::tryUpdate($request->all(),$id))
             return response()->json(['message' => 'success']);
         return response()->json(['message' => 'error']);

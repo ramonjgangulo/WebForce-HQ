@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
         $id = $parameters['user'];
         return [
             'user_name' => 'required|max:191',
-            'user_email'=> 'required|max:191|unique:users,email,'.$id.',user_id',
+            'user_email'=> 'required|max:191|unique:users,user_email,'.$id.',user_id',
             'user_password' => 'min:8|max:191'
         ];
     }
