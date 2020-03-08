@@ -3,37 +3,62 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable,SoftDeletes,HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    protected $table='users';
+
+    protected $primaryKey='user_id';
+
+    public $incrementing = true;
+
+    public $timestamps = true;
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'user_name',
+        'user_email',
+        'user_password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public static function store($user)
+    {
+        try{
+            $user['user_password']=Hash::make($user['user_password']);
+            static::create($user);
+            return true;
+        }catch (Exception $e){
+            return false;
+        }
+    }
+    public static function tryUpdate($request ,$id)
+    {
+        try{
+            $request['user_password']=Hash::make($request['user_password']);
+            static::find($id)->update($request);
+            return true;
+        }catch(Exception $e){
+            return false;
+        }
+    }
+    public static function softDelete($id)
+    {
+        try{
+            $product = static::find($id);
+            $product->delete();
+            return true;
+        }catch(Exception $e){
+            return false;
+        }
+    }
 }
