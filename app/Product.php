@@ -7,10 +7,12 @@ use http\Client\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\HasMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use SoftDeletes;
+    use SoftDeletes,HasMediaTrait;
 
     protected $table = 'Products';
 
@@ -70,6 +72,15 @@ class Product extends Model
         }catch(Exception $e){
             return false;
         }
+    }
+    public static function uploadPhoto($photo,$id)
+    {
+        $product = static::find($id);
+
+        $product->addMedia($photo)
+                ->toMediaCollection('photos');
+
+        return response()->json(['message' => 'success']);
     }
 
 }

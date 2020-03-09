@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         if(Product::store($request->all()))
-            return response()->json(['message' => 'success'],200);
+            return response()->json(['message' => 'success'],201);
         return response()->json(['message' => 'error']);
     }
 
