@@ -4,9 +4,15 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
 require('./bootstrap');
 
 window.Vue = require('vue');
+import Vuetify from 'vuetify';
+import VueRouter from 'vue-router'
+
+Vue.use(Vuetify);
+Vue.use(VueRouter);
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,13 +26,28 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
+Vue.component('app', require('./components/App.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import ProductDetail from "./components/ProductDetail.vue";
+import Products from "./components/Products";
+import Checkout from "./components/Checkout";
+import store from './store';
+const routes = [
+    {path: "/details/:id", component: ProductDetail},
+    {path: '/',component: Products},
+    {path: '/checkout',component:Checkout}
+];
+const router = new VueRouter({
+    routes
+});
 
 const app = new Vue({
     el: '#app',
+    vuetify: new Vuetify(),
+    router,
+    store
 });

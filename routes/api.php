@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('login','Auth\LoginController@loginAttempt');
+Route::get('logout','Auth\LoginController@logout');
 
-Route::apiResource('products','ProductController');
+Route::middleware('jwt')->apiResource('products','ProductController');
 
 Route::apiResource('media','MediaController');
 
-Route::apiResource('users','UserController');
+Route::middleware('jwt')->apiResource('users','UserController');

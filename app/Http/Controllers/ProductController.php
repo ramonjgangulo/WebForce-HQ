@@ -14,7 +14,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        if(Product::store($request->all()))
+        if(Product::store($request->all(),$request->file('img')))
             return response()->json(['message' => 'success'],201);
         return response()->json(['message' => 'error']);
     }

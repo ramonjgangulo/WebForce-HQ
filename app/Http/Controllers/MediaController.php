@@ -18,9 +18,9 @@ class MediaController extends Controller
         return response()->json(['photo' => $photo]);
     }
 
-    public function show()
+    public function show($id)
     {
-
+        return response()->json(['photo' => Product::showPhoto($id)]);
     }
 
     public function update()

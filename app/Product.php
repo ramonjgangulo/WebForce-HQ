@@ -36,14 +36,23 @@ class Product extends Model implements HasMedia
 
     public static function showAll()
     {
-        return static::select(static::$showable)->get();
+        $products = static::all();
+        foreach ($products as $product){
+            $product['img'] = $product->getFirstMediaUrl('img');
+        }
+        return $products;
     }
 
-    public static function store($product)
+    public static function store($product,$img)
     {
         try{
             $product['product_slug']=Str::slug($product['product_name'],'-');
-            static::create($product);
+
+            static::create($product)
+                ->addMedia($img)
+                ->usingFileName($product['product_slug'].'.jpg')
+                ->toMediaCollection('img');
+
             return true;
         }catch (Exception $e){
             return false;
@@ -51,7 +60,9 @@ class Product extends Model implements HasMedia
     }
     public static function show($id)
     {
-        return static::select(static::$showable)->first();
+        $product = static::find($id);
+        $product['img'] = $product->getFirstMediaUrl('img');
+        return $product;
     }
     public static function tryUpdate($request ,$id)
     {
@@ -78,9 +89,15 @@ class Product extends Model implements HasMedia
         $product = static::find($id);
 
         $product->addMedia($photo)
-                ->toMediaCollection('photos');
+                ->toMediaCollection('img');
 
         return response()->json(['message' => 'success']);
+    }
+    public static function showPhoto($id)
+    {
+        $product = static::find($id);
+        $photo = $product->getFirstMedia('img')->getUrl();
+        return $photo;
     }
 
 }
