@@ -86,7 +86,7 @@ class Product extends Model implements HasMedia
             $product = static::find($id);
 
             $product->addMedia($photo)
-                ->usingFileName($product['product_slug'] . time() . 'jpg')
+                ->usingFileName($product['product_slug'] . time() . '.jpg')
                 ->toMediaCollection('product_image');
 
             return true;
