@@ -9,13 +9,16 @@
                 <v-card
                     elevation="3"
                 >
-                    <v-carousel hide-delimiters>
+                    <v-carousel v-if="product_images.length!==0"hide-delimiters>
                         <v-carousel-item
                             v-for="(product_image,i) in product_images"
                             :key="i"
                             :src="product_image"
                         ></v-carousel-item>
                     </v-carousel>
+                    <v-img v-else
+                       height="400px"
+                       v-bind:src="'./not_available.jpg'"></v-img>
                 </v-card>
             </v-col>
             <v-col

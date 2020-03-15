@@ -3700,6 +3700,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -37898,7 +37901,12 @@ var render = function() {
     [
       _c("v-img", {
         staticClass: "white--text align-end",
-        attrs: { height: "200px", src: _vm.product.product_image }
+        attrs: {
+          height: "200px",
+          src: _vm.product.product_image
+            ? _vm.product.product_image
+            : "./not_available.jpg"
+        }
       }),
       _vm._v(" "),
       _c("v-card-subtitle", { staticClass: "pb-0" }, [
@@ -37985,17 +37993,21 @@ var render = function() {
                 "v-card",
                 { attrs: { elevation: "3" } },
                 [
-                  _c(
-                    "v-carousel",
-                    { attrs: { "hide-delimiters": "" } },
-                    _vm._l(_vm.product_images, function(product_image, i) {
-                      return _c("v-carousel-item", {
-                        key: i,
-                        attrs: { src: product_image }
+                  _vm.product_images.length !== 0
+                    ? _c(
+                        "v-carousel",
+                        { attrs: { "hide-delimiters": "" } },
+                        _vm._l(_vm.product_images, function(product_image, i) {
+                          return _c("v-carousel-item", {
+                            key: i,
+                            attrs: { src: product_image }
+                          })
+                        }),
+                        1
+                      )
+                    : _c("v-img", {
+                        attrs: { height: "400px", src: "./not_available.jpg" }
                       })
-                    }),
-                    1
-                  )
                 ],
                 1
               )

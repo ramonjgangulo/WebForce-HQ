@@ -13,9 +13,13 @@
 - copy .env.example file into .env <br>
 - run command php artisan key:generate <br>
 - run command php artisan jwt:secret <br>
+- create database webforcehq
 - run command php artisan migrate <br>
 - run command php artisan db:seed <br>
+- run php artisan storage:link
 - run npm install
 - run npm run production
 - php artisan serve
 - make sure base route on .env file is correct
+
+You can also check a live demo at :

@@ -9,7 +9,7 @@
         <v-img
             class="white--text align-end"
             height="200px"
-            v-bind:src="product.product_image"
+            v-bind:src="product.product_image?product.product_image:'./not_available.jpg'"
         >
         </v-img>
 
