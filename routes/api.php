@@ -14,6 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('jwt')->get('/user', function (Request $request) {
+    $user =\Illuminate\Support\Facades\Auth::user();
+    if($user==null)
+        return response()->json(['Error' => 'There is no user authenticated'],401);
+    return response()->json($user,200);
 });
+
+Route::post('login','Auth\LoginController@loginAttempt');
+Route::get('logout','Auth\LoginController@logout');
+
+Route::apiResource('products','ProductController');
+
+Route::apiResource('media','MediaController');
+
+//Restricts all endpoints from UserController
+Route::middleware('jwt')->apiResource('users','UserController');
