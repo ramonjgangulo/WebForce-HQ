@@ -63,7 +63,8 @@
         },
         methods : {
             ...mapActions(['login']),
-            handleLogin(){
+            handleLogin(e){
+                e.preventDefault();
                 //attempt to login
                 this.login({
                     email : this.email,

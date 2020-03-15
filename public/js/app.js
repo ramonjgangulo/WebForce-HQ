@@ -3418,8 +3418,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['login']), {
-    handleLogin: function handleLogin() {
-      //attempt to login
+    handleLogin: function handleLogin(e) {
+      e.preventDefault(); //attempt to login
+
       this.login({
         email: this.email,
         password: this.password
@@ -36588,7 +36589,7 @@ var render = function() {
                                   }
                                 }),
                                 _vm._v(" "),
-                                _c("v-text-field", {
+                                _c("v-textarea", {
                                   attrs: {
                                     dense: "",
                                     label: "Description*",

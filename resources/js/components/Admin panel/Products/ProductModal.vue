@@ -17,12 +17,12 @@
                                     v-bind:error-messages="validationErrors.product_name?validationErrors.product_name:''"
                                 ></v-text-field>
                                 <!--binds validation errors caught from laravel form request to each input-->
-                                <v-text-field
+                                <v-textarea
                                     dense
                                     v-model="product.product_description"
                                     label="Description*"
                                     v-bind:error-messages="validationErrors.product_description?validationErrors.product_description:''"
-                                ></v-text-field>
+                                ></v-textarea>
                                 <v-text-field
                                     dense
                                     v-model="product.product_price"
