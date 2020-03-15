@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        //restricting certain endpoints access, so only users can access them
+        $this->middleware('jwt')->only(['store','update','destroy']);
+    }
     public function index()
     {
         return response()->json(Product::showAll(),200);
@@ -14,9 +19,9 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        if(Product::store($request->all(),$request->file('img')))
+        if(Product::store($request->all()))
             return response()->json(['message' => 'success'],201);
-        return response()->json(['message' => 'error']);
+        return response()->json(['message' => 'error'],500);
     }
 
     public function show($id)
@@ -27,14 +32,14 @@ class ProductController extends Controller
     public function update(ProductRequest $request,$id)
     {
         if(Product::tryUpdate($request->all(),$id))
-            return response()->json(['message' => 'success']);
-        return response()->json(['message' => 'error']);
+            return response()->json(['message' => 'success'],204);
+        return response()->json(['message' => 'error'],500);
     }
 
     public function destroy($id)
     {
         if(Product::softDelete($id))
-            return response()->json(['message' => 'success']);
-        return response()->json(['message' => 'error']);
+            return response()->json(['message' => 'success'],204);
+        return response()->json(['message' => 'error'],500);
     }
 }

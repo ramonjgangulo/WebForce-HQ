@@ -38,21 +38,16 @@ class Product extends Model implements HasMedia
     {
         $products = static::all();
         foreach ($products as $product){
-            $product['img'] = $product->getFirstMediaUrl('img');
+            $product['product_image'] = $product->getFirstMediaUrl('product_image');
         }
         return $products;
     }
 
-    public static function store($product,$img)
+    public static function store($product)
     {
         try{
             $product['product_slug']=Str::slug($product['product_name'],'-');
-
-            static::create($product)
-                ->addMedia($img)
-                ->usingFileName($product['product_slug'].'.jpg')
-                ->toMediaCollection('img');
-
+            static::create($product);
             return true;
         }catch (Exception $e){
             return false;
@@ -61,14 +56,14 @@ class Product extends Model implements HasMedia
     public static function show($id)
     {
         $product = static::find($id);
-        $product['img'] = $product->getFirstMediaUrl('img');
         return $product;
     }
     public static function tryUpdate($request ,$id)
     {
         try{
             $request['product_slug']=Str::slug($request['product_name'],'-');
-            static::find($id)->update($request);
+            $product = static::find($id);
+            $product->update($request);
             return true;
         }catch(Exception $e){
             return false;
@@ -84,20 +79,31 @@ class Product extends Model implements HasMedia
             return false;
         }
     }
-    public static function uploadPhoto($photo,$id)
+
+    public static function uploadImage($photo,$id)
     {
-        $product = static::find($id);
+        try {
+            $product = static::find($id);
 
-        $product->addMedia($photo)
-                ->toMediaCollection('img');
+            $product->addMedia($photo)
+                ->usingFileName($product['product_slug'] . time() . 'jpg')
+                ->toMediaCollection('product_image');
 
-        return response()->json(['message' => 'success']);
+            return true;
+        }catch(Exception $e){
+            return false;
+        }
     }
-    public static function showPhoto($id)
+    public static function getImages($id)
     {
         $product = static::find($id);
-        $photo = $product->getFirstMedia('img')->getUrl();
-        return $photo;
+
+        $images = $product->getMedia('product_image');
+
+        $imageUrls = array();
+        foreach ($images as $image)
+            array_push($imageUrls,$image->getFullUrl());
+        return $imageUrls;
     }
 
 }

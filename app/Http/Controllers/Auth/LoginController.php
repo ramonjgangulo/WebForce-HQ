@@ -37,6 +37,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return response()->json(['mensaje' => 'Hasta la próxima!'],200);
+        return response()->json(['mensaje' => 'logout successful'],200);
     }
 }

@@ -2,35 +2,35 @@
     <v-container
         class="mt-12"
     >
-        <v-row >
+        <v-row justify="center" >
             <v-col
-                class="mt-12"
-                cols="4"
+                class="mt-12 col-sm-10 col-md-4 ml-md-0 ml-1"
             >
                 <v-card
                     elevation="3"
                 >
-                    <v-img
-                        v-bind:src="product.img"
-                    >
-                    </v-img>
+                    <v-carousel hide-delimiters>
+                        <v-carousel-item
+                            v-for="(product_image,i) in product_images"
+                            :key="i"
+                            :src="product_image"
+                        ></v-carousel-item>
+                    </v-carousel>
                 </v-card>
             </v-col>
             <v-col
-                offset="2"
-                cols="6"
+                class="mt-sm-0 mt-md-12 col-sm-10 col-md-6 offset-1"
             >
-
-                <v-row class="mt-12">
+                <v-row class="mt-md-12 col-sm-0">
                     <p><span>{{product.product_name}}</span></p>
                 </v-row >
-                <v-row class="mb-12">
+                <v-row class="mb-md-12 col-sm-0">
                     <p>{{product.product_description}}</p>
                 </v-row>
-                <v-row class="mb-12">
+                <v-row class="mb-md-12 col-sm-0">
                     <p>$ USD {{product.product_price}}</p>
                 </v-row>
-                <v-row class="mb-12">
+                <v-row class="mb-md-12 col-sm-0">
                     <v-col cols="4">
                         <v-text-field
                             label="Quantity"
@@ -40,17 +40,19 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col cols="4">
+                    <v-col class="col-10 col-md-4">
                         <v-btn
-                            x-large
+                            block
+                            large
                             tile
                             color="primary"
                             v-on:click="addToCart"
                         >Add to cart</v-btn>
                     </v-col>
-                    <v-col cols="4">
+                    <v-col class="col-10 col-md-4">
                         <v-btn
-                            x-large
+                            large
+                            block
                             tile
                             outlined
                             link
@@ -65,20 +67,35 @@
 </template>
 
 <script>
-    import axiosClient from '../axios';
+    import axiosClient from '../../config/axios';
     import {mapActions} from 'vuex';
 
     export default {
         data(){
             return {
+                //variable to store the product's info
                 product:{},
+                //variable to store all the product's images url
+                product_images : [],
+                //variable to control te quantity input
                 quantity : 0
             }
         },
-        created(){
-            axiosClient.get('api/products/'+this.$route.params.id)
-                .then(res => this.product = res.data)
-                .catch(error => console.log(error));
+        async created(){
+            try {
+                //fetches product's info
+                let {data} = await axiosClient.get('api/products/' + this.$route.params.id)
+                this.product = data;
+
+                //fetches product's images using the media api
+                let response = await axiosClient.get('api/media/' + this.$route.params.id)
+                this.product_images = response.data.product_images;
+
+            }catch(e){
+                console.log(e)
+            }
+
+
         },
         methods : {
             ...mapActions(['addProduct']),

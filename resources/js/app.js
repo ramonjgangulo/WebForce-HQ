@@ -32,14 +32,20 @@ Vue.component('app', require('./components/App.vue').default);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-import ProductDetail from "./components/ProductDetail.vue";
-import Products from "./components/Products";
-import Checkout from "./components/Checkout";
+import ProductDetail from "./components/E-shop/ProductDetail.vue";
+import Products from "./components/E-shop/Products";
+import Checkout from "./components/E-shop/Checkout";
+import AdminUsers from './components/Admin panel/Users/AdminUsers';
+import AdminProducts from "./components/Admin panel/Products/AdminProducts";
+
 import store from './store';
+
 const routes = [
     {path: "/details/:id", component: ProductDetail},
-    {path: '/',component: Products},
-    {path: '/checkout',component:Checkout}
+    {path: '/', component: Products},
+    {path: '/checkout', component:Checkout},
+    {path: '/admin/users', component: AdminUsers},
+    {path: '/admin/products', component: AdminProducts}
 ];
 const router = new VueRouter({
     routes

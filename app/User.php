@@ -23,12 +23,12 @@ class User extends Authenticatable implements JWTSubject
 
     protected $fillable = [
         'user_name',
-        'user_email',
-        'user_password',
+        'email',
+        'password',
     ];
 
     protected $hidden = [
-        'user_password',
+        'password',
     ];
 
     public function getJWTIdentifier(){return $this->getKey();}
@@ -37,7 +37,7 @@ class User extends Authenticatable implements JWTSubject
     public static function store($user)
     {
         try{
-            $user['user_password']=Hash::make($user['user_password']);
+            $user['password']=Hash::make($user['password']);
             static::create($user);
             return true;
         }catch (Exception $e){
@@ -47,8 +47,9 @@ class User extends Authenticatable implements JWTSubject
     public static function tryUpdate($request ,$id)
     {
         try{
-            if(array_key_exists('user_password',$request))
-                $request['user_password']=Hash::make($request['user_password']);
+            // if a password was updated, it changes the value, to its encryption
+            if(array_key_exists('password',$request))
+                $request['password']=Hash::make($request['password']);
             static::find($id)->update($request);
             return true;
         }catch(Exception $e){

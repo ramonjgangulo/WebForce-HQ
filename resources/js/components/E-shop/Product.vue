@@ -1,12 +1,15 @@
 <template>
     <v-card
         v-bind:hover="true"
-        height="80vh"
+        max-width="400"
+        class="mx-auto"
+        v-bind:to="'/details/'+product.product_id"
+        :ripple="false"
     >
         <v-img
             class="white--text align-end"
-            height="60vh"
-            v-bind:src="product.img"
+            height="200px"
+            v-bind:src="product.product_image"
         >
         </v-img>
 
@@ -15,25 +18,21 @@
         <v-card-text class="text--primary">
             <div>{{product.product_price}}</div>
         </v-card-text>
-
-        <v-card-actions class="justify-center " >
+        <v-card-actions>
+            <v-spacer></v-spacer>
             <v-btn
-                large
                 tile
+                depressed
                 color="primary"
-                width="9vw"
                 v-on:click="handleAdition"
             >
-                Add to cart
+                <v-icon left>mdi-plus-thick</v-icon> to cart
             </v-btn>
-
             <v-btn
-                large
                 tile
                 color="primary"
                 outlined
                 link
-                width="9vw"
                 v-bind:to="'/details/'+product.product_id"
             >
                 Details
@@ -50,7 +49,9 @@
         props : ['product'],
         methods : {
             ...mapActions(['addProduct']),
-            handleAdition(){
+            handleAdition(e){
+                e.preventDefault();
+                //adds the selected product to the cart with a quantity of one
                 this.addProduct({
                     ...this.product,
                     'quantity' : 1

@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+//axios's instance configuration
+
 const axiosClient = axios.create({
     baseURL : process.env.APP_URL,
     headers : {

@@ -3,16 +3,17 @@
         v-model="drawerState"
         fixed
         app
+        right
         temporary
-        width="60vh"
+        width="400"
     >
         <v-card v-if="allProducts.length!==0"
             class="mt-12 mx-auto pb-6"
-            max-width="400"
+            max-width="360"
             tile
         >
-            <div v-for="product in allProducts">
-                <v-list-item three-line>
+            <v-list>
+                <v-list-item  max-width="360" v-for="product in allProducts" :key="product.product_id" three-line>
                     <v-row justify="end" align="center">
                         <v-col cols="8">
                             <v-list-item-content>
@@ -40,13 +41,12 @@
                     </v-row>
                 </v-list-item>
                 <v-divider></v-divider>
-            </div>
-            <v-divider></v-divider>
-            <v-list-item>
-                <v-list-item-subtitle>
-                    Total : $ USD {{calculateTotal}}
-                </v-list-item-subtitle>
-            </v-list-item>
+                <v-list-item>
+                    <v-list-item-subtitle>
+                        Total : $ USD {{calculateTotal}}
+                    </v-list-item-subtitle>
+                </v-list-item>
+            </v-list>
             <div class="d-flex justify-center mt-6 mb-12">
                 <v-btn
                     color="success"
@@ -54,7 +54,7 @@
                     outlined
                     tile
                     to="/checkout"
-                >Checkoutt</v-btn>
+                >Checkout</v-btn>
             </div>
         </v-card>
         <div v-else class="d-flex justify-center mt-12">
